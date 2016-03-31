@@ -8,6 +8,7 @@ dependencies {
     compile spinnaker.dependency('spectatorAws')
     compile spinnaker.dependency('spectatorGc')
     compile spinnaker.dependency('spectatorJvm')
+    compile 'com.netflix.spectator:spectator-reg-servo:0.35.0'
     testCompile spinnaker.dependency('junit')
     testRuntime spinnaker.dependency('slf4jSimple')
 }

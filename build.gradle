@@ -13,12 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+import static java.lang.System.getenv
 
 buildscript {
+    project.ext.set("getOrDefault", { key, propertyKey, defaultValue ->
+        if(project.hasProperty(propertyKey)) {
+            println "$key fetch from property"
+            return property(propertyKey)
+        } else if(getenv(key) != null){
+            println "$key fetch from environemnt"
+            return getenv(key);
+        } else {
+            println "$key default value"
+            return defaultValue
+        }
+    })
+ 
+  project.ext.set("artifactoryContext",  getOrDefault("ARTIFACTORY_CONTEXT", "artifactory.context", "https://artifacts.schibsted.io/artifactory"))
+  project.ext.set("artifactoryUser",  getOrDefault("ARTIFACTORY_USER", "artifactory.user", ""))
+  project.ext.set("artifactoryPassword",  getOrDefault("ARTIFACTORY_PASSWORD", "artifactory.password", ""))
 
   repositories {
     jcenter()
     maven { url 'http://dl.bintray.com/spinnaker/gradle/' }
+    maven {
+      url "$artifactoryContext/plugins-release"
+      credentials {
+        username = "$artifactoryUser"
+        password = "$artifactoryPassword"
+      }
+    }
   }
   dependencies {
     classpath 'com.netflix.spinnaker.gradle:spinnaker-gradle-project:3.5.0'

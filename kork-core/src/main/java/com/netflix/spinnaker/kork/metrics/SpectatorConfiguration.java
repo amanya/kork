@@ -19,6 +19,7 @@ package com.netflix.spinnaker.kork.metrics;
 import com.netflix.spectator.api.Clock;
 import com.netflix.spectator.api.DefaultRegistry;
 import com.netflix.spectator.api.Registry;
+import com.netflix.spectator.servo.ServoRegistry;
 import com.netflix.spectator.api.Spectator;
 import com.netflix.spectator.gc.GcLogger;
 import com.netflix.spectator.jvm.Jmx;
@@ -45,7 +46,7 @@ public class SpectatorConfiguration {
   @Bean
   @ConditionalOnMissingBean(Registry.class)
   Registry registry() {
-    return new DefaultRegistry(Clock.SYSTEM);
+    return new ServoRegistry();
   }
 
   @Bean
